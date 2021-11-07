@@ -64,7 +64,7 @@ class NavigationTest {
     }
 
     @Test
-    fun testBackstacks() {
+    fun testBackstackSimple() {
         launchActivity<MainActivity>()
 
         goToSecondFromFirst()
@@ -126,23 +126,154 @@ class NavigationTest {
         rotateScreen(scenario)
         openAbout()
         checkAboutActivity()
+        pressBack()
+
+        openAbout()
+        checkAboutActivity()
+        rotateScreen(scenario)
+        checkAboutActivity()
     }
 
     @Test
     fun testBackstackMaxSize() {
         var scenario = launchActivity<MainActivity>()
-        pressBackUnconditionallyNTimes(1)
-        Assert.assertEquals(scenario.state, Lifecycle.State.DESTROYED)
+        scenario.checkBackstackDepth(1)
 
         scenario = launchActivity()
         goToSecondFromFirst()
-        pressBackUnconditionallyNTimes(2)
-        Assert.assertEquals(scenario.state, Lifecycle.State.DESTROYED)
+        scenario.checkBackstackDepth(2)
 
         scenario = launchActivity()
         goToThirdFromFirst()
-        pressBackUnconditionallyNTimes(3)
-        Assert.assertEquals(scenario.state, Lifecycle.State.DESTROYED)
+        scenario.checkBackstackDepth(3)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToSecond)
+        scenario.checkBackstackDepth(2)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToFirst)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToSecond)
+        scenario.checkBackstackDepth(2)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToFirst)
+        pressButton(R.id.bnToSecond)
+        scenario.checkBackstackDepth(2)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToFirst)
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        scenario.checkBackstackDepth(3)
+    }
+
+    @Test
+    fun testBackstackWithRotations() {
+        var scenario = launchActivity<MainActivity>()
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        goToSecondFromFirst()
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(2)
+
+        scenario = launchActivity()
+        goToThirdFromFirst()
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(3)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToSecond)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(2)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToFirst)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToSecond)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(2)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToFirst)
+        pressButton(R.id.bnToSecond)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(2)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToFirst)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        pressButton(R.id.bnToFirst)
+        pressButton(R.id.bnToSecond)
+        pressButton(R.id.bnToThird)
+        rotateScreen(scenario)
+        scenario.checkBackstackDepth(3)
     }
 
     @Test

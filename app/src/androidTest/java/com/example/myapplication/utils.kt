@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.view.Gravity
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -17,6 +18,7 @@ import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.junit.Assert
 
 
 fun openAbout() = openAboutViaBottomNav()
@@ -44,6 +46,11 @@ fun pressBackUnconditionallyNTimes(n: Int) {
     repeat(n) {
         Espresso.pressBackUnconditionally()
     }
+}
+
+fun ActivityScenario<*>.checkBackstackDepth(depth: Int) {
+    pressBackUnconditionallyNTimes(depth)
+    Assert.assertEquals(state, Lifecycle.State.DESTROYED)
 }
 
 fun pressButton(id: Int) {
