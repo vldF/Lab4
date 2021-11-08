@@ -37,6 +37,13 @@ class NavigationTest {
 
         // we are on 1st screen
         isFragmentShown(R.id.fragment1)
+
+        pressButton(R.id.bnToSecond)
+        isFragmentShown(R.id.fragment2)
+        pressButton(R.id.bnToThird)
+        isFragmentShown(R.id.fragment3)
+        pressButton(R.id.bnToSecond)
+        isFragmentShown(R.id.fragment2)
     }
 
     @Test
@@ -294,5 +301,48 @@ class NavigationTest {
         openAbout()
         pressBackUnconditionallyNTimes(4)
         Assert.assertEquals(scenario.state, Lifecycle.State.DESTROYED)
+    }
+
+    @Test
+    fun testBackWithUpNavigation() {
+        var scenario = launchActivity<MainActivity>()
+        goToSecondFromFirst()
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment1)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        goToThirdFromFirst()
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment2)
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment1)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        goToSecondFromFirst()
+        openAbout()
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment2)
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment1)
+        scenario.checkBackstackDepth(1)
+
+        scenario = launchActivity()
+        goToThirdFromFirst()
+        openAbout()
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment3)
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment2)
+        openAbout()
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment2)
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment1)
+        openAbout()
+        pressBackUpNav(1)
+        isFragmentShown(R.id.fragment1)
+        scenario.checkBackstackDepth(1)
     }
 }

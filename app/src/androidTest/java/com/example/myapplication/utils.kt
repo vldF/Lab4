@@ -16,8 +16,7 @@ import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.DrawerMatchers.isClosed
 import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import org.junit.Assert
 
 
@@ -33,12 +32,18 @@ fun goToThirdFromFirst() {
 }
 
 fun isFragmentShown(id: Int) {
-    onView(withId(id)).check(matches(ViewMatchers.isDisplayed()))
+    onView(withId(id)).check(matches(isDisplayed()))
 }
 
 fun pressBackNTimes(n: Int) {
     repeat(n) {
         Espresso.pressBack()
+    }
+}
+
+fun pressBackUpNav(n: Int) {
+    repeat(n) {
+        onView(withContentDescription(R.string.nav_app_bar_navigate_up_description)).perform(click())
     }
 }
 
