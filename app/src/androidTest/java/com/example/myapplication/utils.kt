@@ -79,7 +79,7 @@ fun rotateScreen(scenario: ActivityScenario<*>) {
 }
 
 fun checkAboutActivity() {
-    onView(withId(R.id.activity_about)).check(matches(ViewMatchers.isDisplayed()))
+    onView(withId(R.id.activity_about)).check(matches(isDisplayed()))
 }
 
 private fun openAboutViaBottomNav() {
